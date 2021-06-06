@@ -15,7 +15,8 @@ public class Logics extends JPanel {
         Logics.serv_button();
         Logics.operators();
     }
-//  функция получения чисел из строки с экрана
+
+    //  функция получения чисел из строки с экрана
     private static String before_calc() {
         Logics.str_1 = "";
         Logics.str_2 = "";
@@ -98,10 +99,24 @@ public class Logics extends JPanel {
     //  функция клавиши "точка"
     private static void dec_point() {
         Logics.str = Panel.screen.getText();
-        if (str.length() == 0) {
-            Panel.screen.setText("0.");
-        } else if (!str.contains(".")) {
-            Panel.screen.setText(str + ".");
+        int last_symbol = str.length() - 1;
+        int pos_op = 0;
+        if (str.length() > 0) {
+            if (!str.contains(".")) {
+                Panel.screen.setText(str + ".");
+            } else if (str.contains("-")) {
+                pos_op = str.indexOf("-");
+            } else if (str.contains("+")) {
+                pos_op = str.indexOf("+");
+            } else if (str.contains("/")) {
+                pos_op = str.indexOf("/");
+            } else if (str.contains("*")) {
+                pos_op = str.indexOf("*");
+            }
+            if (str.lastIndexOf(".") < pos_op && (str.charAt(last_symbol) != '/' && str.charAt(last_symbol) != '*' &&
+                    str.charAt(last_symbol) != '-' && str.charAt(last_symbol) != '+')) {
+                Panel.screen.setText(str + ".");
+            }
         }
     }
 
