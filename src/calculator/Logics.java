@@ -21,9 +21,15 @@ public class Logics extends JPanel {
         Logics.str_1 = "";
         Logics.str_2 = "";
         Logics.str = Panel.screen.getText();
+        int flag = 1;
         int pos_operate = 0;
         String op;
-        for (int i = 0; i < str.length(); i++) {
+        int i = 0;
+        if (str.charAt(0) == '-') {
+            i = 1;
+            flag = -1;
+        }
+        for (; i < str.length(); i++) {
             if (str.charAt(i) != '/' && str.charAt(i) != '*' && str.charAt(i) != '-' && str.charAt(i) != '+') {
                 str_1 += str.charAt(i);
                 pos_operate = i + 1;
@@ -33,7 +39,7 @@ public class Logics extends JPanel {
         }
         str_2 = str.substring(pos_operate + 1);
         op = "" + str.charAt(pos_operate);
-        number_1 = Double.parseDouble(str_1);
+        number_1 = Double.parseDouble(str_1) * flag;
         number_2 = Double.parseDouble(str_2);
         return op;
     }
@@ -49,7 +55,6 @@ public class Logics extends JPanel {
         }};
 
         result = map.get(op);
-        Panel.screen.setText(null);
         Panel.screen.setText("" + result);
     }
 
@@ -60,10 +65,8 @@ public class Logics extends JPanel {
             Logics.number_1 = Double.parseDouble(str);
             if (Logics.number_1 >= 0) {
                 Logics.result = Math.sqrt(number_1);
-                Panel.screen.setText(null);
                 Panel.screen.setText("" + result);
             } else {
-                Panel.screen.setText(null);
                 Panel.screen.setText("ERROR");
             }
         }
@@ -74,16 +77,26 @@ public class Logics extends JPanel {
         ActionListener operate = (ActionEvent e) -> {
             JButton b = (JButton) e.getSource();
             Logics.str = Panel.screen.getText();
+            String flag = "";
             if (str.length() > 0) {
+                if (str.charAt(0) == '-') {
+                    flag = "-";
+                    str = str.substring(1);
+                }
                 if (!str.contains("-") && !str.contains("+") && !str.contains("/") && !str.contains("*")) {
                     Panel.screen.setText(Panel.screen.getText() + b.getText());
+                } else if (str.charAt(str.length() - 1) == '/' || str.charAt(str.length() - 1) == '*' ||
+                        str.charAt(str.length() - 1) == '-' || str.charAt(str.length() - 1) == '+') {
+                    String str_cur = str.substring(0, str.length() - 1);
+                    Panel.screen.setText(flag + str_cur + b.getText());
                 } else {
                     Logics.calculation();
                 }
             }
         };
         int[] pos_num = {7, 11, 15, 19};
-        for (int p : pos_num) {
+        for (
+                int p : pos_num) {
             Panel.button[p].addActionListener(operate);
         }
     }
@@ -182,7 +195,6 @@ public class Logics extends JPanel {
                 put("+", number_1 + number_1 * number_2 / 100);
             }};
             result = map.get(op);
-            Panel.screen.setText(null);
             Panel.screen.setText("" + result);
         }
     }
